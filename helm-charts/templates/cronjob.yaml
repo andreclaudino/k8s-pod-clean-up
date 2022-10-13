@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Release.Name | trunc 63 | trimSuffix "-"}}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "helm-chart.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.args.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ include "helm-chart.serviceAccountName" . }}
+          containers:
+          - name: main
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command:
+            - entrypoint.sh
+            env:
+            - name: NAMESPACE
+              value: {{ .Release.Namespace }}
+            - name: POD_STATUS
+              value: {{ .Values.args.podStatus }}
+          restartPolicy: OnFailure

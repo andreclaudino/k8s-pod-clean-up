@@ -1,0 +1,11 @@
+Job deployed.
+
+Will run:
+
+```
+kubectl -n {{ .Values.args.namespace }} get pods | grep {{ .Values.args.podStatus }} | awk '{print $1}' | xargs kubectl -n {{ .Values.args.namespace }} delete pods --force
+
+Based on schedule:
+
+{{ .Values.args.schedule }}
+```
