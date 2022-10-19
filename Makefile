@@ -1,5 +1,5 @@
 DOCKER_IMAGE_NAME=andreclaudino/k8s-pod-clean-up
-DOCKER_IMAGE_TAG=1.0.1-1.24.6
+DOCKER_IMAGE_TAG=1.0.3-1.24.6
 
 docker/image:
 	chmod +x docker/entrypoint.sh
